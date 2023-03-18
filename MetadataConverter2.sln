@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetadataConverter2", "MetadataConverter2\MetadataConverter2.csproj", "{B1CBA968-2661-4A02-AF04-2AAFA1F92731}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetadataConverter2.CLI", "MetadataConverter2.CLI\MetadataConverter2.CLI.csproj", "{CA828E8F-0A77-4161-A6EF-7EE047125CA3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B1CBA968-2661-4A02-AF04-2AAFA1F92731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1CBA968-2661-4A02-AF04-2AAFA1F92731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1CBA968-2661-4A02-AF04-2AAFA1F92731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1CBA968-2661-4A02-AF04-2AAFA1F92731}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA828E8F-0A77-4161-A6EF-7EE047125CA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA828E8F-0A77-4161-A6EF-7EE047125CA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA828E8F-0A77-4161-A6EF-7EE047125CA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA828E8F-0A77-4161-A6EF-7EE047125CA3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {70E57101-4791-463F-ADF3-12459A5FFDCA}
+	EndGlobalSection
+EndGlobal
