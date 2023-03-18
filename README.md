@@ -15,7 +15,7 @@ Arguments:
   [convert]     enable converting to standard unity format.
 ```
 _____________________________________________________________________________________________________________________________
-Note: for GI_V2, use Cpp2Il with patched file and option --force-unity-version 2019.4.15f
+Note: for `GI_V2`, use `Cpp2Il` with patched file and option `--force-unity-version 2019.4.15f`
 
 Looking forward for feedback for issues/bugs to fix and update.
 _____________________________________________________________________________________________________________________________
