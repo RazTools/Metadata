@@ -25,6 +25,6 @@ Special Thank to:
 - PartyPooper
 - Ayy Lamo
 - Nitro
-- Hutaro
+- Hotaru
 - Samboy
 - Khang06
