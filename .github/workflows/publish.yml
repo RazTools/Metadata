@@ -3,8 +3,8 @@ name: Build
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    paths-ignore:
+      - '**/README.md'
   workflow_dispatch:
 
 jobs:

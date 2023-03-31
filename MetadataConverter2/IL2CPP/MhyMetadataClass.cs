@@ -31,9 +31,9 @@ public static class MhyIl2Cpp
         public uint rgctxEntriesOffset; // 0x58
         [Version(Max = 24.1)]
         public int rgctxEntriesCount;
-        [Version(Max = 24.5)]
+        [Version(Min = 24.5)]
         public uint unk58; // 0x58
-        [Version(Max = 24.5)]
+        [Version(Min = 24.5)]
         public int unk60;
         public uint seedPart10; //0x60
         public uint seedPart11;
