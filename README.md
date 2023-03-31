@@ -23,7 +23,7 @@ Special Thank to:
 - MetadataConverter original author
 - Perfare
 - PartyPooper
-- Ayy Lamo
+- Ayy Lmao
 - Nitro
 - Hotaru
 - Samboy
