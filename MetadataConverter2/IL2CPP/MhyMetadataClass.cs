@@ -3,7 +3,7 @@
 namespace MetadataConverter2.IL2CPP;
 public static class MhyIl2Cpp
 {
-    public class GlobalMetadataHeader
+    public record GlobalMetadataHeader
     {
         public uint sanity; // 0x00
         public int version;
@@ -31,9 +31,9 @@ public static class MhyIl2Cpp
         public uint rgctxEntriesOffset; // 0x58
         [Version(Max = 24.1)]
         public int rgctxEntriesCount;
-        [Version(Min = 24.5)]
+        [Version(Min = 24.4)]
         public uint unk58; // 0x58
-        [Version(Min = 24.5)]
+        [Version(Min = 24.4)]
         public int unk60;
         public uint seedPart10; //0x60
         public uint seedPart11;
@@ -119,11 +119,11 @@ public static class MhyIl2Cpp
         public int metadataUsageListsCount;
     }
 
-    public class TypeDefinition
+    public record TypeDefinition
     {
         public uint nameIndex;
         public uint namespaceIndex;
-        [Version(Max = 24)]
+        [Version(Max = 24.1)]
         public int customAttributeIndex;
         public int byvalTypeIndex;
         [Version(Max = 24.5)]
@@ -179,7 +179,7 @@ public static class MhyIl2Cpp
         public bool IsEnum => ((bitfield >> 1) & 0x1) == 1;
     }
 
-    public class MethodDefinition
+    public record MethodDefinition
     {
         public int returnType;
         public int declaringType;
@@ -207,7 +207,7 @@ public static class MhyIl2Cpp
         public uint token;
     }
 
-    public class FieldDefinition
+    public record FieldDefinition
     {
         [Version(Max = 24)]
         public int customAttributeIndex;
@@ -217,7 +217,7 @@ public static class MhyIl2Cpp
         public uint token;
     }
 
-    public class PropertyDefinition
+    public record PropertyDefinition
     {
         [Version(Max = 24)]
         public int customAttributeIndex;
@@ -231,13 +231,13 @@ public static class MhyIl2Cpp
         public int get;
     }
 
-    public class StringLiteral
+    public record StringLiteral
     {
         public int dataIndex;
         public uint length;
     }
 
-    public class MhyUsages
+    public record MhyUsages
     {
         public ulong typeInfoUsageCount;
         public ulong typeInfoUsage;

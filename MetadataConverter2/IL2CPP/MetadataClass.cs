@@ -3,7 +3,7 @@
 namespace MetadataConverter2.IL2CPP;
 public static class UnityIl2Cpp
 {
-    public class GlobalMetadataHeader
+    public record GlobalMetadataHeader
     {
         public uint sanity;
         public int version;
@@ -109,7 +109,35 @@ public static class UnityIl2Cpp
         public int exportedTypeDefinitionsSize;
     }
 
-    public class AssemblyDefinition
+    public record MetadataRegistration
+    {
+        public long genericClassesCount;
+        public ulong genericClasses;
+        public long genericInstsCount;
+        public ulong genericInsts;
+        public long genericMethodTableCount;
+        public ulong genericMethodTable;
+        public long typesCount;
+        public ulong types;
+        public long methodSpecsCount;
+        public ulong methodSpecs;
+        [Version(Max = 16)]
+        public long methodReferencesCount;
+        [Version(Max = 16)]
+        public ulong methodReferences;
+
+        public long fieldOffsetsCount;
+        public ulong fieldOffsets;
+
+        public long typeDefinitionsSizesCount;
+        public ulong typeDefinitionsSizes;
+        [Version(Min = 19)]
+        public ulong metadataUsagesCount;
+        [Version(Min = 19)]
+        public ulong metadataUsages;
+    }
+
+    public record AssemblyDefinition
     {
         public int imageIndex;
         [Version(Min = 24.1)]
@@ -123,7 +151,7 @@ public static class UnityIl2Cpp
         public AssemblyNameDefinition? aname;
     }
 
-    public class AssemblyNameDefinition
+    public record AssemblyNameDefinition
     {
         public uint nameIndex;
         public uint cultureIndex;
@@ -141,7 +169,7 @@ public static class UnityIl2Cpp
         public byte[]? public_key_token;
     }
 
-    public class ImageDefinition
+    public record ImageDefinition
     {
         public uint nameIndex;
         public int assemblyIndex;
@@ -164,7 +192,7 @@ public static class UnityIl2Cpp
         public uint customAttributeCount;
     }
 
-    public class TypeDefinition
+    public record TypeDefinition
     {
         public uint nameIndex;
         public uint namespaceIndex;
@@ -233,7 +261,7 @@ public static class UnityIl2Cpp
         public bool IsEnum => ((bitfield >> 1) & 0x1) == 1;
     }
 
-    public class MethodDefinition
+    public record MethodDefinition
     {
         public uint nameIndex;
         public int declaringType;
@@ -259,7 +287,7 @@ public static class UnityIl2Cpp
         public ushort parameterCount;
     }
 
-    public class ParameterDefinition
+    public record ParameterDefinition
     {
         public uint nameIndex;
         public uint token;
@@ -268,7 +296,7 @@ public static class UnityIl2Cpp
         public int typeIndex;
     }
 
-    public class FieldDefinition
+    public record FieldDefinition
     {
         public uint nameIndex;
         public int typeIndex;
@@ -278,14 +306,14 @@ public static class UnityIl2Cpp
         public uint token;
     }
 
-    public class FieldDefaultValue
+    public record FieldDefaultValue
     {
         public int fieldIndex;
         public int typeIndex;
         public int dataIndex;
     }
 
-    public class PropertyDefinition
+    public record PropertyDefinition
     {
         public uint nameIndex;
         public int get;
@@ -297,7 +325,7 @@ public static class UnityIl2Cpp
         public uint token;
     }
 
-    public class CustomAttributeTypeRange
+    public record CustomAttributeTypeRange
     {
         [Version(Min = 24.1)]
         public uint token;
@@ -305,32 +333,32 @@ public static class UnityIl2Cpp
         public int count;
     }
 
-    public class MetadataUsageList
+    public record MetadataUsageList
     {
         public uint start;
         public uint count;
     }
 
-    public class MetadataUsagePair
+    public record MetadataUsagePair
     {
         public uint destinationIndex;
         public uint encodedSourceIndex;
     }
 
-    public class StringLiteral
+    public record StringLiteral
     {
         public uint length;
         public int dataIndex;
     }
 
-    public class ParameterDefaultValue
+    public record ParameterDefaultValue
     {
         public int parameterIndex;
         public int typeIndex;
         public int dataIndex;
     }
 
-    public class EventDefinition
+    public record EventDefinition
     {
         public uint nameIndex;
         public int typeIndex;
@@ -343,7 +371,7 @@ public static class UnityIl2Cpp
         public uint token;
     }
 
-    public class GenericContainer
+    public record GenericContainer
     {
         /* index of the generic type definition or the generic method definition corresponding to this container */
         public int ownerIndex; // either index into Class metadata array or MethodDefinition array
@@ -354,13 +382,13 @@ public static class UnityIl2Cpp
         public int genericParameterStart;
     }
 
-    public class FieldRef
+    public record FieldRef
     {
         public int typeIndex;
         public int fieldIndex; // local offset into type fields
     }
 
-    public class GenericParameter
+    public record GenericParameter
     {
         public int ownerIndex;  /* Type or method this parameter was defined in. */
         public uint nameIndex;
@@ -380,14 +408,14 @@ public static class UnityIl2Cpp
         _RGCTX_DATA_CONSTRAINED,
     }
 
-    public class RGCTXDefinitionData
+    public record RGCTXDefinitionData
     {
         public int rgctxDataDummy;
         public int methodIndex => rgctxDataDummy;
         public int typeIndex => rgctxDataDummy;
     }
 
-    public class RGCTXDefinition
+    public record RGCTXDefinition
     {
         public RGCTXDataType type => type_post29 == 0 ? (RGCTXDataType)type_pre29 : (RGCTXDataType)type_post29;
         [Version(Max = 27.1)]
@@ -411,7 +439,7 @@ public static class UnityIl2Cpp
         kMetadataUsageMethodRef,
     };
 
-    public class CustomAttributeDataRange
+    public record CustomAttributeDataRange
     {
         public uint token;
         public uint startOffset;

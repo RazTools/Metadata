@@ -9,12 +9,12 @@ public static class MetaManager
     {
         int index = 0;
         Metas.Add(index++, new Mark(MetaType.GICB1, 24));
-        Metas.Add(index++, new Struct(MetaType.ZZZ, 24.5));
+        Metas.Add(index++, new Struct(MetaType.ZZZ, Array.Empty<byte>(), 24.5));
         Metas.Add(index++, new Blocks(MetaType.GI, GIInitVector, 24));
         Metas.Add(index++, new Blocks(MetaType.GICBX, GICBXInitVector, 24));
         Metas.Add(index++, new Blocks(MetaType.BH3, BH3InitVector, 24));
-        Metas.Add(index++, new Blocks(MetaType.SR, SRInitVector, 24));
-        Metas.Add(index++, new Usages(MetaType.GI_V2, GIInitVector, 24.5));
+        Metas.Add(index++, new Struct(MetaType.SR, SRInitVector, 24.5));
+        Metas.Add(index++, new Usages(MetaType.GIV2, GIInitVector, 24.5));
 
     }
     public static MetaBase GetMeta(MetaType metaType)

@@ -1,5 +1,4 @@
 ﻿using MetadataConverter2.Attributes;
-using MetadataConverter2.Extensions;
 using System.Reflection;
 using System.Text;
 
@@ -8,7 +7,6 @@ public class BinaryStream : IDisposable
 {
     public double Version;
     public bool Is32Bit;
-    public ulong ImageBase;
     private readonly Stream stream;
     private readonly BinaryReader reader;
     private readonly BinaryWriter writer;

@@ -10,10 +10,12 @@ namespace MetadataConverter2.MetaTypes;
 public record Blocks : MetaBase
 {
     private readonly byte[] _initVector;
+    private readonly bool _encrypted;
 
     public Blocks(MetaType type, byte[] initVector, double version) : base(type, version)
     {
         _initVector = initVector;
+        _encrypted = _initVector.Length != 0;
     }
     public override void Convert(MemoryStream stream)
     {
@@ -22,11 +24,14 @@ public record Blocks : MetaBase
 
     public override void Decrypt(MemoryStream stream)
     {
-        Console.WriteLine("Decrypting blocks...");
-        long metadataSize = DecryptBlocks(stream);
-        Console.WriteLine("Decrypting stringLiterals...");
-        DecryptStrings(stream);
-        stream.SetLength(metadataSize);
+        if (_encrypted)
+        {
+            Console.WriteLine("Decrypting blocks...");
+            long metadataSize = DecryptBlocks(stream);
+            Console.WriteLine("Decrypting stringLiterals...");
+            DecryptStrings(stream);
+            stream.SetLength(metadataSize);
+        }
     }
     private long DecryptBlocks(MemoryStream stream)
     {

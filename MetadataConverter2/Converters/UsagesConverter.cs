@@ -20,34 +20,35 @@ public static class UsagesConverter
             version = (int)newBS.Version
         };
 
-        uint i = 0;
+        uint index = 0;
         MetadataUsagePair[] metadataUsagePairs = bs.ReadMetadataClassArray<MetadataUsagePair>(header.metadataUsagePairsOffset, header.metadataUsagePairsCount);
         MetadataUsageList[] metadataUsageList = new MetadataUsageList[] { new MetadataUsageList() { start = 0, count = (uint)metadataUsagePairs.Length } };
         metadataUsages = new ulong[metadataUsagePairs.Length];
-        foreach (MetadataUsagePair pair in metadataUsagePairs)
+        foreach (MetadataUsagePair metadataUsagePair in metadataUsagePairs)
         {
-            uint usage = GetEncodedIndexType(pair.encodedSourceIndex);
-            uint decodedIndex = GetDecodedMethodIndex(version, pair.encodedSourceIndex);
 
-            metadataUsages[i] = usages.GetAddress(usage) + (decodedIndex * 8);
-            pair.encodedSourceIndex = EncodeSourceIndex(version, usage, i);
-            i++;
+            uint usage = GetEncodedIndexType(metadataUsagePair.encodedSourceIndex);
+            uint decodedIndex = GetDecodedMethodIndex(version, metadataUsagePair.encodedSourceIndex);
+
+            metadataUsages[index] = usages.GetAddress(usage) + (decodedIndex * 8);
+
+            metadataUsagePair.destinationIndex = index++;
         }
 
-        newBS.Position = (uint)newBS.SizeOf(typeof(GlobalMetadataHeader));
+        newBS.Position = (uint)typeof(GlobalMetadataHeader).SizeOf(newBS.Version);
 
-        bs.ConvertMetadataSection<MhyIl2Cpp.StringLiteral, StringLiteral>(newBS, header.stringLiteralOffset, header.stringLiteralSize, out newHeader.stringLiteralOffset, out newHeader.stringLiteralSize, StringLiteralConverter);
+        bs.ConvertMetadataSection<MhyIl2Cpp.StringLiteral, StringLiteral>(newBS, header.stringLiteralOffset, header.stringLiteralSize, out newHeader.stringLiteralOffset, out newHeader.stringLiteralSize, ConvertersUtils.StringLiteralConverter);
         bs.CopyMetadataSection(newBS, header.stringLiteralDataOffset, header.stringLiteralDataSize, out newHeader.stringLiteralDataOffset, out newHeader.stringLiteralDataSize);
         bs.CopyMetadataSection(newBS, header.stringOffset, header.stringSize, out newHeader.stringOffset, out newHeader.stringSize);
         bs.CopyMetadataSection(newBS, header.eventsOffset, header.eventsSize, out newHeader.eventsOffset, out newHeader.eventsSize);
-        bs.ConvertMetadataSection<MhyIl2Cpp.PropertyDefinition, PropertyDefinition>(newBS, header.propertiesOffset, header.propertiesSize, out newHeader.propertiesOffset, out newHeader.propertiesSize, PropertyDefinitionConverter);
-        bs.ConvertMetadataSection<MhyIl2Cpp.MethodDefinition, MethodDefinition>(newBS, header.methodsOffset, header.methodsSize, out newHeader.methodsOffset, out newHeader.methodsSize, MethodDefinitionConverter);
+        bs.ConvertMetadataSection<MhyIl2Cpp.PropertyDefinition, PropertyDefinition>(newBS, header.propertiesOffset, header.propertiesSize, out newHeader.propertiesOffset, out newHeader.propertiesSize, ConvertersUtils.PropertyDefinitionConverter);
+        bs.ConvertMetadataSection<MhyIl2Cpp.MethodDefinition, MethodDefinition>(newBS, header.methodsOffset, header.methodsSize, out newHeader.methodsOffset, out newHeader.methodsSize, ConvertersUtils.MethodDefinitionConverter);
         bs.CopyMetadataSection(newBS, header.parameterDefaultValuesOffset, header.parameterDefaultValuesSize, out newHeader.parameterDefaultValuesOffset, out newHeader.parameterDefaultValuesSize);
         bs.CopyMetadataSection(newBS, header.fieldDefaultValuesOffset, header.fieldDefaultValuesSize, out newHeader.fieldDefaultValuesOffset, out newHeader.fieldDefaultValuesSize);
         bs.CopyMetadataSection(newBS, header.fieldAndParameterDefaultValueDataOffset, header.fieldAndParameterDefaultValueDataSize, out newHeader.fieldAndParameterDefaultValueDataOffset, out newHeader.fieldAndParameterDefaultValueDataSize);
         bs.CopyMetadataSection(newBS, (int)header.fieldMarshaledSizesOffset, header.fieldMarshaledSizesSize, out newHeader.fieldMarshaledSizesOffset, out newHeader.fieldMarshaledSizesSize);
         bs.CopyMetadataSection(newBS, header.parametersOffset, header.parametersSize, out newHeader.parametersOffset, out newHeader.parametersSize);
-        bs.ConvertMetadataSection<MhyIl2Cpp.FieldDefinition, FieldDefinition>(newBS, header.fieldsOffset, header.fieldsSize, out newHeader.fieldsOffset, out newHeader.fieldsSize, FieldDefinitionConverter);
+        bs.ConvertMetadataSection<MhyIl2Cpp.FieldDefinition, FieldDefinition>(newBS, header.fieldsOffset, header.fieldsSize, out newHeader.fieldsOffset, out newHeader.fieldsSize, ConvertersUtils.FieldDefinitionConverter);
         bs.CopyMetadataSection(newBS, header.genericParametersOffset, header.genericParametersSize, out newHeader.genericParametersOffset, out newHeader.genericParametersSize);
         bs.CopyMetadataSection(newBS, header.genericParameterConstraintsOffset, header.genericParameterConstraintsSize, out newHeader.genericParameterConstraintsOffset, out newHeader.genericParameterConstraintsSize);
         bs.CopyMetadataSection(newBS, header.genericContainersOffset, header.genericContainersSize, out newHeader.genericContainersOffset, out newHeader.genericContainersSize);
@@ -55,11 +56,11 @@ public static class UsagesConverter
         bs.CopyMetadataSection(newBS, header.interfacesOffset, header.interfacesSize, out newHeader.interfacesOffset, out newHeader.interfacesSize);
         bs.CopyMetadataSection(newBS, header.vtableMethodsOffset, header.vtableMethodsSize, out newHeader.vtableMethodsOffset, out newHeader.vtableMethodsSize);
         bs.CopyMetadataSection(newBS, header.interfaceOffsetsOffset, header.interfaceOffsetsSize, out newHeader.interfaceOffsetsOffset, out newHeader.interfaceOffsetsSize);
-        bs.ConvertMetadataSection<MhyIl2Cpp.TypeDefinition, TypeDefinition>(newBS, header.typeDefinitionsOffset, header.typeDefinitionsSize, out newHeader.typeDefinitionsOffset, out newHeader.typeDefinitionsSize, TypeDefinitionConverter);
+        bs.ConvertMetadataSection<MhyIl2Cpp.TypeDefinition, TypeDefinition>(newBS, header.typeDefinitionsOffset, header.typeDefinitionsSize, out newHeader.typeDefinitionsOffset, out newHeader.typeDefinitionsSize, ConvertersUtils.TypeDefinitionConverter);
         bs.CopyMetadataSection(newBS, header.imagesOffset, header.imagesSize, out newHeader.imagesOffset, out newHeader.imagesSize);
         bs.CopyMetadataSection(newBS, header.assembliesOffset, header.assembliesSize, out newHeader.assembliesOffset, out newHeader.assembliesSize);
-        bs.CopyMetadataSection(newBS, header.metadataUsageListsOffset, header.metadataUsageListsCount, out newHeader.metadataUsageListsOffset, out newHeader.metadataUsageListsCount);
-        bs.CopyMetadataSection(newBS, header.metadataUsagePairsOffset, header.metadataUsagePairsCount, out newHeader.metadataUsagePairsOffset, out newHeader.metadataUsagePairsCount);
+        newBS.WriteMetadataSection(metadataUsageList, out newHeader.metadataUsageListsOffset, out newHeader.metadataUsageListsCount);
+        newBS.WriteMetadataSection(metadataUsagePairs, out newHeader.metadataUsagePairsOffset, out newHeader.metadataUsagePairsCount);
         bs.CopyMetadataSection(newBS, header.fieldRefsOffset, header.fieldRefsSize, out newHeader.fieldRefsOffset, out newHeader.fieldRefsSize);
         bs.CopyMetadataSection(newBS, header.referencedAssembliesOffset, header.referencedAssembliesSize, out newHeader.referencedAssembliesOffset, out newHeader.referencedAssembliesSize);
         bs.CopyMetadataSection(newBS, header.attributesInfoOffset, header.attributesInfoCount, out newHeader.attributesInfoOffset, out newHeader.attributesInfoCount);
@@ -73,100 +74,6 @@ public static class UsagesConverter
 
         ms.MoveTo(stream);
     }
-
-    public static StringLiteral StringLiteralConverter(MhyIl2Cpp.StringLiteral value)
-    {
-        return new()
-        {
-            length = value.length,
-            dataIndex = value.dataIndex
-        };
-    }
-
-    public static PropertyDefinition PropertyDefinitionConverter(MhyIl2Cpp.PropertyDefinition value)
-    {
-        return new()
-        {
-            nameIndex = value.nameIndex,
-            get = value.get,
-            set = value.set,
-            attrs = value.attrs,
-            customAttributeIndex = value.customAttributeIndex,
-            token = value.token
-        };
-    }
-
-    public static MethodDefinition MethodDefinitionConverter(MhyIl2Cpp.MethodDefinition value)
-    {
-        return new()
-        {
-            nameIndex = value.nameIndex,
-            declaringType = value.declaringType,
-            returnType = value.returnType,
-            parameterStart = value.parameterStart,
-            customAttributeIndex = value.customAttributeIndex,
-            genericContainerIndex = value.genericContainerIndex,
-            methodIndex = value.methodIndex,
-            invokerIndex = value.invokerIndex,
-            delegateWrapperIndex = value.delegateWrapperIndex,
-            rgctxStartIndex = value.rgctxStartIndex,
-            rgctxCount = value.rgctxCount,
-            token = value.token,
-            flags = value.flags,
-            iflags = value.iflags,
-            slot = value.slot,
-            parameterCount = value.parameterCount
-        };
-    }
-
-    public static FieldDefinition FieldDefinitionConverter(MhyIl2Cpp.FieldDefinition value)
-    {
-        return new()
-        {
-            nameIndex = value.nameIndex,
-            typeIndex = value.typeIndex,
-            customAttributeIndex = value.customAttributeIndex,
-            token = value.token
-        };
-    }
-
-    public static TypeDefinition TypeDefinitionConverter(MhyIl2Cpp.TypeDefinition value)
-    {
-        return new()
-        {
-            nameIndex = value.nameIndex,
-            namespaceIndex = value.namespaceIndex,
-            customAttributeIndex = value.customAttributeIndex,
-            byvalTypeIndex = value.byvalTypeIndex,
-            byrefTypeIndex = value.byrefTypeIndex,
-            declaringTypeIndex = value.declaringTypeIndex,
-            parentIndex = value.parentIndex,
-            elementTypeIndex = value.elementTypeIndex,
-            rgctxStartIndex = value.rgctxStartIndex,
-            rgctxCount = value.rgctxCount,
-            genericContainerIndex = value.genericContainerIndex,
-            flags = value.flags,
-            fieldStart = value.fieldStart,
-            methodStart = value.methodStart,
-            eventStart = value.eventStart,
-            propertyStart = value.propertyStart,
-            nestedTypesStart = value.nestedTypesStart,
-            interfacesStart = value.interfacesStart,
-            vtableStart = value.vtableStart,
-            interfaceOffsetsStart = value.interfaceOffsetsStart,
-            method_count = value.method_count,
-            property_count = value.property_count,
-            field_count = value.field_count,
-            event_count = value.event_count,
-            nested_type_count = value.nested_type_count,
-            vtable_count = value.vtable_count,
-            interfaces_count = value.interfaces_count,
-            interface_offsets_count = value.interface_offsets_count,
-            bitfield = value.bitfield,
-            token = value.token
-        };
-    }
-
     private static uint GetEncodedIndexType(uint index)
     {
         return (index & 0xE0000000) >> 29;
@@ -175,10 +82,5 @@ public static class UsagesConverter
     private static uint GetDecodedMethodIndex(double version, uint index)
     {
         return version >= 27 ? (index & 0x1FFFFFFEU) >> 1 : index & 0x1FFFFFFFU;
-    }
-
-    private static uint EncodeSourceIndex(double version, uint usage, uint index)
-    {
-        return (usage << 29) | (version >= 27 ? index << 1 : index);
     }
 }

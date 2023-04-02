@@ -2,15 +2,13 @@
 
 namespace MetadataConverter2.MetaTypes
 {
-    public record Struct : MetaBase
+    public record Struct : Blocks
     {
-        public Struct(MetaType type, double version) : base(type, version) { }
+        public Struct(MetaType type, byte[] initVector, double version) : base(type, initVector, version) { }
 
         public override void Convert(MemoryStream stream)
         {
             StructConverter.Convert(stream, Version, 24.5);
         }
-
-        public override void Decrypt(MemoryStream stream) { }
     }
 }

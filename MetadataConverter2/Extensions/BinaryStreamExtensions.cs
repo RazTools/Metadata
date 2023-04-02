@@ -1,6 +1,4 @@
-﻿using MetadataConverter2.Attributes;
-using MetadataConverter2.Utils;
-using System.Reflection;
+﻿using MetadataConverter2.Utils;
 
 namespace MetadataConverter2.Extensions;
 public static class BinaryStreamExtensions
@@ -23,16 +21,16 @@ public static class BinaryStreamExtensions
     }
     public static T[] ReadMetadataClassArray<T>(this BinaryStream stream, uint addr, int count) where T : new()
     {
-        return stream.ReadClassArray<T>(addr, count / stream.SizeOf(typeof(T)));
+        return stream.ReadClassArray<T>(addr, count / typeof(T).SizeOf(stream.Version));
     }
     public static void WriteMetadataClassArray<T>(this BinaryStream stream, uint addr, int count, T[] values) where T : new()
     {
-        stream.WriteClassArray(addr, count / stream.SizeOf(typeof(T)), values);
+        stream.WriteClassArray(addr, count / typeof(T).SizeOf(stream.Version), values);
     }
     public static void WriteMetadataSection<T>(this BinaryStream stream, T[] values, out uint newAddr, out int newCount) where T : new()
     {
         newAddr = (uint)stream.Position;
-        newCount = values.Length * stream.SizeOf(typeof(T));
+        newCount = values.Length * typeof(T).SizeOf(stream.Version);
         stream.WriteMetadataClassArray(newAddr, newCount, values);
     }
     public static void ConvertMetadataSection<TFrom, TTo>(this BinaryStream stream, BinaryStream outStream, uint addr, int count, out uint newAddr, out int newCount, Func<TFrom, TTo> converter) where TFrom : new() where TTo : new()
@@ -59,49 +57,5 @@ public static class BinaryStreamExtensions
 
         stream.Position = addr;
         stream.BlockCopyTo(outStream, count);
-    }
-    public static int SizeOf(this BinaryStream stream, Type type)
-    {
-        int size = 0;
-        foreach (FieldInfo i in type.GetFields())
-        {
-            VersionAttribute? attr = (VersionAttribute)Attribute.GetCustomAttribute(i, typeof(VersionAttribute));
-            if (attr != null)
-            {
-                if (stream.Version < attr.Min || stream.Version > attr.Max)
-                {
-                    continue;
-                }
-            }
-            Type fieldType = i.FieldType;
-            if (fieldType.IsPrimitive)
-            {
-                size += GetPrimitiveTypeSize(fieldType.Name);
-            }
-            else if (fieldType.IsEnum)
-            {
-                Type e = fieldType.GetField("value__").FieldType;
-                size += GetPrimitiveTypeSize(e.Name);
-            }
-            else if (fieldType.IsArray)
-            {
-                ArrayLengthAttribute? arrayLengthAttribute = i.GetCustomAttribute<ArrayLengthAttribute>();
-                size += arrayLengthAttribute.Length;
-            }
-            else
-            {
-                size += stream.SizeOf(fieldType);
-            }
-        }
-        return size;
-    }
-    private static int GetPrimitiveTypeSize(string name)
-    {
-        return name switch
-        {
-            "Int32" or "UInt32" => 4,
-            "Int16" or "UInt16" => 2,
-            _ => 0,
-        };
     }
 }

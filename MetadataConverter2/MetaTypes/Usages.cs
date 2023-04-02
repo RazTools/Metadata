@@ -1,7 +1,6 @@
 ﻿using AsmResolver.PE.File;
 using MetadataConverter2.Converters;
-using MetadataConverter2.IL2CPP;
-using MetadataConverter2.Utils;
+using MetadataConverter2.Extensions;
 
 namespace MetadataConverter2.MetaTypes;
 public record Usages : Blocks
@@ -26,18 +25,16 @@ public record Usages : Blocks
         byte[] bytes = File.ReadAllBytes(il2cpp_path);
         PEFile peFile = PEFile.FromBytes(bytes);
 
-        if (peFile.FindUsagesRVA(out uint mhyUsagesRVA))
+        if (peFile.TryGetCodegenRegisteration(Version, out CodegenRegistration codegen))
         {
-            Console.WriteLine($"Found mhyUsages at 0x{mhyUsagesRVA:X8} !!");
+            Console.WriteLine($"Found codegen at 0x{peFile.GetVA(codegen.Rva):X8} !!");
 
-            MhyIl2Cpp.MhyUsages usages = peFile.GetMhyUsages(mhyUsagesRVA);
-
-            Console.WriteLine("Applying mhyUsages...");
-            UsagesConverter.Convert(stream, usages, Version, 24.5, out ulong[]? metadataUsages);
+            Console.WriteLine("Applying Usages...");
+            UsagesConverter.Convert(stream, codegen.Usages, Version, 24.5, out ulong[]? metadataUsages);
 
             Console.WriteLine($"Patching {Path.GetFileName(il2cpp_path)}...");
             string outputPath = Path.Combine(Path.GetDirectoryName(il2cpp_path), $"{Path.GetFileNameWithoutExtension(il2cpp_path)}_patched{Path.GetExtension(il2cpp_path)}");
-            peFile.PatchMhyUsages(mhyUsagesRVA, metadataUsages);
+            codegen.Patch(peFile, Version, metadataUsages);
             peFile.Write(outputPath);
             Console.WriteLine($"Generated patched file at {outputPath} !!");
         }

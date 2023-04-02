@@ -29,6 +29,6 @@
         GICBX,
         BH3,
         SR,
-        GI_V2,
+        GIV2,
     }
 }

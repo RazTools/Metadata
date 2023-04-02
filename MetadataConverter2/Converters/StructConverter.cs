@@ -18,7 +18,7 @@ public static class StructConverter
             version = (int)newBS.Version
         };
 
-        newBS.Position = (uint)newBS.SizeOf(typeof(UnityIl2Cpp.GlobalMetadataHeader));
+        newBS.Position = (uint)typeof(UnityIl2Cpp.GlobalMetadataHeader).SizeOf(newBS.Version);
 
         bs.ConvertMetadataSection<MhyIl2Cpp.StringLiteral, UnityIl2Cpp.StringLiteral>(newBS, header.stringLiteralOffset, header.stringLiteralSize, out newHeader.stringLiteralOffset, out newHeader.stringLiteralSize, StringLiteralConverter);
         bs.CopyMetadataSection(newBS, header.stringLiteralDataOffset, header.stringLiteralDataSize, out newHeader.stringLiteralDataOffset, out newHeader.stringLiteralDataSize);
