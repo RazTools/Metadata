@@ -23,12 +23,13 @@
 
     public enum MetaType
     {
-        GICB1,
-        ZZZ,
         GI,
+        GIDestincy,
+        GICB1,
         GICBX,
+        GIV2,
         BH3,
         SR,
-        GIV2,
+        ZZZ,
     }
 }
