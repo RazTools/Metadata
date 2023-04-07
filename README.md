@@ -11,7 +11,7 @@ Usage:
 Arguments:
   <input_path>  Input metadata file.
   <output_path> Output metadata file.
-  <game>        (GICB1|ZZZ|GI|GICBX|BH3|SR|GIV2)
+  <game>        (GI|GIPack|GICB1|GICBX|GIV2|BH3|SR|ZZZ)
   [convert]     enable converting to standard unity format.
 ```
 _____________________________________________________________________________________________________________________________

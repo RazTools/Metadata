@@ -9,7 +9,7 @@ public static class MetaManager
     {
         int index = 0;
         Metas.Add(index++, new Blocks(MetaType.GI, GIInitVector, 24));
-        Metas.Add(index++, new Blocks(MetaType.GIDestincy, new byte[0x10], 24));
+        Metas.Add(index++, new Blocks(MetaType.GIPack, new byte[0x10], 24));
         Metas.Add(index++, new Mark(MetaType.GICB1, 24));
         Metas.Add(index++, new Blocks(MetaType.GICBX, new byte[0x10], 24));
         Metas.Add(index++, new Usages(MetaType.GIV2, GIInitVector, 24.5));

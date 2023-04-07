@@ -24,7 +24,7 @@
     public enum MetaType
     {
         GI,
-        GIDestincy,
+        GIPack,
         GICB1,
         GICBX,
         GIV2,
