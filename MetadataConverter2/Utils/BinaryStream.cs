@@ -7,6 +7,7 @@ public class BinaryStream : IDisposable
 {
     public double Version;
     public bool Is32Bit;
+    private readonly bool _leaveOpen;
     private readonly Stream stream;
     private readonly BinaryReader reader;
     private readonly BinaryWriter writer;
@@ -17,9 +18,10 @@ public class BinaryStream : IDisposable
     private readonly Dictionary<Type, MethodInfo> genericMethodCache = new();
     private readonly Dictionary<FieldInfo, VersionAttribute[]> attributeCache = new();
 
-    public BinaryStream(Stream input)
+    public BinaryStream(Stream input, bool leaveOpen = false)
     {
         stream = input;
+        _leaveOpen = leaveOpen;
         reader = new BinaryReader(stream, Encoding.UTF8, true);
         writer = new BinaryWriter(stream, Encoding.UTF8, true);
         readClass = GetType().GetMethod("ReadClass", Type.EmptyTypes);
@@ -390,7 +392,10 @@ public class BinaryStream : IDisposable
         {
             reader.Close();
             writer.Close();
-            stream.Close();
+            if (!_leaveOpen)
+            {
+                stream.Close();
+            }
         }
     }
 

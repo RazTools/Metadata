@@ -24,12 +24,13 @@
     public enum MetaType
     {
         GI,
-        GIPack,
         GICB1,
         GICBX,
         GIV2,
+        BH3Pre,
         BH3,
         SR,
+        SRV2,
         ZZZ,
     }
 }
