@@ -13,10 +13,10 @@ public abstract record Usages : Blocks
         if (string.IsNullOrEmpty(il2cpp_path))
         {
             Console.WriteLine("Please enter path to Il2Cpp binary to be patched (UserAssembly.dll):");
-            string path = @"" + Console.ReadLine();
+            string path = Console.ReadLine().Trim('\"');
             if (!File.Exists(path))
             {
-                throw new FileNotFoundException();
+                throw new FileNotFoundException("Unable to find file at given path", path);
             }
 
             il2cpp_path = path;

@@ -26,7 +26,7 @@ public record StructUsages : Usages
             metadataUsages[metadataUsagePair.destinationIndex] = usages.GetAddress(usage) + (decodedIndex * 8);
         }
 
-        StructConverter.Convert(stream, Version, 24.5);
+        StructConverter.Convert(stream, Version);
     }
 }
 

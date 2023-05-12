@@ -8,7 +8,7 @@ namespace MetadataConverter2.MetaTypes
 
         public override void Convert(MemoryStream stream)
         {
-            StructConverter.Convert(stream, Version, 24.5);
+            StructConverter.Convert(stream, Version);
         }
     }
 }

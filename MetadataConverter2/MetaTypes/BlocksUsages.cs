@@ -29,6 +29,6 @@ public record BlocksUsages : Usages
             metadataUsagePair.destinationIndex = index++;
         }
 
-        BlocksConverter.Convert(stream, Version, 24.5, metadataUsagePairs, metadataUsageList);
+        BlocksConverter.Convert(stream, Version, metadataUsagePairs, metadataUsageList);
     }
 }

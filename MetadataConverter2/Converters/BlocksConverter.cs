@@ -6,11 +6,11 @@ using static MetadataConverter2.IL2CPP.UnityIl2Cpp;
 namespace MetadataConverter2.Converters;
 public static class BlocksConverter
 {
-    public static void Convert(MemoryStream stream, double version, double targetVersion, MetadataUsagePair[] metadataUsagePairs = null, MetadataUsageList[] metadataUsageList = null)
+    public static void Convert(MemoryStream stream, double version, MetadataUsagePair[] metadataUsagePairs = null, MetadataUsageList[] metadataUsageList = null)
     {
         using BinaryStream bs = new(stream) { Version = version };
         using MemoryStream ms = new(0x1000);
-        using BinaryStream newBS = new(ms) { Version = targetVersion };
+        using BinaryStream newBS = new(ms) { Version = version };
 
         MhyIl2Cpp.GlobalMetadataHeader header = bs.ReadClass<MhyIl2Cpp.GlobalMetadataHeader>(0);
         GlobalMetadataHeader newHeader = new()

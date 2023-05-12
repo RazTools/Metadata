@@ -29,6 +29,7 @@
         GIV2,
         BH3Pre,
         BH3,
+        BH3V2,
         SR,
         SRV2,
         ZZZ,

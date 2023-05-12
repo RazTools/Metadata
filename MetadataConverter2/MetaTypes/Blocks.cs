@@ -19,7 +19,7 @@ public record Blocks : MetaBase
     }
     public override void Convert(MemoryStream stream)
     {
-        BlocksConverter.Convert(stream, Version, 24);
+        BlocksConverter.Convert(stream, Version);
     }
 
     public override void Decrypt(MemoryStream stream)

@@ -5,11 +5,11 @@ using MetadataConverter2.Utils;
 namespace MetadataConverter2.Converters;
 public static class StructConverter
 {
-    public static void Convert(MemoryStream stream, double version, double targetVersion)
+    public static void Convert(MemoryStream stream, double version)
     {
         using BinaryStream bs = new(stream) { Version = version };
         using MemoryStream ms = new(0x1000);
-        using BinaryStream newBS = new(ms) { Version = targetVersion };
+        using BinaryStream newBS = new(ms) { Version = version };
 
         MhyIl2Cpp.GlobalMetadataHeader header = bs.ReadClass<MhyIl2Cpp.GlobalMetadataHeader>(0);
         UnityIl2Cpp.GlobalMetadataHeader newHeader = new()
