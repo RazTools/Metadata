@@ -57,10 +57,10 @@ catch (Exception e)
 static string GetHelpMessage()
 {
     string VersionString = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-    string HelpMsg = $@"MetadataConverter2 v{VersionString}
+    string HelpMsg = $@"Metadata v{VersionString}
 ------------------------
 Usage:
-  MetadataConverter2 <input_path> <output_path> <game> [convert]
+  Metadata <input_path> <output_path> <game> [convert]
 
 Arguments:
   <input_path>  Input metadata file.

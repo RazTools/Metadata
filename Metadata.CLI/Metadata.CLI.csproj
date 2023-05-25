@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MetadataConverter2\MetadataConverter2.csproj" />
+    <ProjectReference Include="..\Metadata\Metadata.csproj" />
   </ItemGroup>
 
 </Project>
