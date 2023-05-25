@@ -26,3 +26,9 @@ Special Thank to:
 - Hotaru
 - Samboy
 - Khang06
+_____________________________________________________________________________________________________________________________
+
+If you find `Metadata` useful, you can leave a star 😄
+If you want to support (optional), you can do so [here](https://ko-fi.com/razmoth)
+
+Thank you, looking forward for your feedback
