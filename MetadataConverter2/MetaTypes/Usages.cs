@@ -8,11 +8,11 @@ public abstract record Usages : Blocks
     protected string il2cpp_path = string.Empty;
 
     public Usages(MetaType type, byte[] initVector, double version) : base(type, initVector, version) { }
-    public override void Convert(MemoryStream stream)
+    public override bool Convert(MemoryStream stream)
     {
         if (string.IsNullOrEmpty(il2cpp_path))
         {
-            Console.WriteLine("Please enter path to Il2Cpp binary to be patched (UserAssembly.dll):");
+            Console.WriteLine("Please enter path to il2cpp binary to be patched:");
             string path = Console.ReadLine().Trim('\"');
             if (!File.Exists(path))
             {
@@ -25,22 +25,26 @@ public abstract record Usages : Blocks
         byte[] bytes = File.ReadAllBytes(il2cpp_path);
         PEFile peFile = PEFile.FromBytes(bytes);
 
-        if (peFile.TryGetCodegenRegisteration(Version, out CodegenRegistration codegen))
+        if (!peFile.TryGetCodegenRegisteration(Version, out CodegenRegistration codegen))
         {
-            Console.WriteLine($"Found codegen at 0x{peFile.GetVA(codegen.Rva):X8} !!");
-
-            Console.WriteLine("Applying Usages...");
-            Apply(stream, codegen.Usages, out var metadataUsages);
-
-            var fileInfo = new FileInfo(il2cpp_path);
-            string outputPath = Path.Combine(fileInfo.Directory.FullName, $"{Path.GetFileNameWithoutExtension(fileInfo.Name)}_patched{fileInfo.Extension}");
-
-            Console.WriteLine($"Patching {fileInfo.Name}...");
-            codegen.Patch(peFile, Version, metadataUsages);
-            peFile.Write(outputPath);
-
-            Console.WriteLine($"Generated patched file at {outputPath} !!");
+            Console.WriteLine("Unable to find codegen !!");
+            return false;
         }
+
+        Console.WriteLine($"Found codegen at 0x{peFile.GetVA(codegen.Rva):X8} !!");
+
+        Console.WriteLine("Applying Usages...");
+        Apply(stream, codegen.Usages, out var metadataUsages);
+
+        var fileInfo = new FileInfo(il2cpp_path);
+        string outputPath = Path.Combine(fileInfo.Directory.FullName, $"{Path.GetFileNameWithoutExtension(fileInfo.Name)}_patched{fileInfo.Extension}");
+
+        Console.WriteLine($"Patching {fileInfo.Name}...");
+        codegen.Patch(peFile, Version, metadataUsages);
+        peFile.Write(outputPath);
+
+        Console.WriteLine($"Generated patched il2cpp binary at {outputPath} !!");
+        return true;
     }
     protected abstract void Apply(MemoryStream stream, MhyIl2Cpp.MhyUsages usages, out ulong[]? metadataUsages);
     protected uint GetEncodedIndexType(uint index)

@@ -15,8 +15,8 @@ namespace MetadataConverter2.MetaTypes
 
         public Mark(MetaType type, double version) : base(type, version) { }
 
-        public override void Convert(MemoryStream stream) { }
-        public override void Decrypt(MemoryStream stream)
+        public override bool Convert(MemoryStream stream) => true;
+        public override bool Decrypt(MemoryStream stream)
         {
             using BinaryStream bs = new(stream);
             string signature = bs.ReadStringToNull(0, 4);
@@ -52,6 +52,7 @@ namespace MetadataConverter2.MetaTypes
             dataStream.Position = 0;
             dataStream.CopyTo(stream);
             stream.SetLength(dataStream.Length);
+            return true;
         }
     }
 }

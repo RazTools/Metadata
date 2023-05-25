@@ -12,8 +12,8 @@
             Version = version;
         }
 
-        public abstract void Decrypt(MemoryStream stream);
-        public abstract void Convert(MemoryStream stream);
+        public abstract bool Decrypt(MemoryStream stream);
+        public abstract bool Convert(MemoryStream stream);
 
         public sealed override string ToString()
         {

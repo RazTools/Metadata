@@ -17,12 +17,12 @@ public record Blocks : MetaBase
         _initVector = initVector;
         _encrypted = _initVector.Length != 0;
     }
-    public override void Convert(MemoryStream stream)
+    public override bool Convert(MemoryStream stream)
     {
-        BlocksConverter.Convert(stream, Version);
+        return BlocksConverter.Convert(stream, Version);
     }
 
-    public override void Decrypt(MemoryStream stream)
+    public override bool Decrypt(MemoryStream stream)
     {
         if (_encrypted)
         {
@@ -32,6 +32,7 @@ public record Blocks : MetaBase
             DecryptStrings(stream);
             stream.SetLength(metadataSize);
         }
+        return true;
     }
     private long DecryptBlocks(MemoryStream stream)
     {

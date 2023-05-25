@@ -5,7 +5,7 @@ using MetadataConverter2.Utils;
 namespace MetadataConverter2.Converters;
 public static class StructConverter
 {
-    public static void Convert(MemoryStream stream, double version)
+    public static bool Convert(MemoryStream stream, double version)
     {
         using BinaryStream bs = new(stream) { Version = version };
         using MemoryStream ms = new(0x1000);
@@ -56,6 +56,7 @@ public static class StructConverter
         newBS.WriteClass(0, newHeader);
 
         ms.MoveTo(stream);
+        return true;
     }
 
     public static UnityIl2Cpp.StringLiteral StringLiteralConverter(MhyIl2Cpp.StringLiteral value)

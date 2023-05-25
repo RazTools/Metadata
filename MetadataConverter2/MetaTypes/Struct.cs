@@ -6,9 +6,9 @@ namespace MetadataConverter2.MetaTypes
     {
         public Struct(MetaType type, byte[] initVector, double version) : base(type, initVector, version) { }
 
-        public override void Convert(MemoryStream stream)
+        public override bool Convert(MemoryStream stream)
         {
-            StructConverter.Convert(stream, Version);
+            return StructConverter.Convert(stream, Version);
         }
     }
 }

@@ -29,11 +29,19 @@ try
 
     using MemoryStream metadataStream = new(metadataBytes);
     MetaBase game = MetaManager.GetMeta(gameType);
-    game.Decrypt(metadataStream);
+    if (!game.Decrypt(metadataStream))
+    {
+        Console.WriteLine("Unable to decrypt metadata !!");
+        return;
+    }
     if (convert)
     {
         Console.WriteLine($"Converting...");
-        game.Convert(metadataStream);
+        if (!game.Convert(metadataStream))
+        {
+            Console.WriteLine("Unable to convert metadata !!");
+            return;
+        }
     }
 
     Console.WriteLine($"Writing...");

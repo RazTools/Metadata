@@ -6,7 +6,7 @@ using static MetadataConverter2.IL2CPP.UnityIl2Cpp;
 namespace MetadataConverter2.Converters;
 public static class BlocksConverter
 {
-    public static void Convert(MemoryStream stream, double version, MetadataUsagePair[] metadataUsagePairs = null, MetadataUsageList[] metadataUsageList = null)
+    public static bool Convert(MemoryStream stream, double version, MetadataUsagePair[] metadataUsagePairs = null, MetadataUsageList[] metadataUsageList = null)
     {
         using BinaryStream bs = new(stream) { Version = version };
         using MemoryStream ms = new(0x1000);
@@ -69,5 +69,6 @@ public static class BlocksConverter
         newBS.WriteClass(0, newHeader);
 
         ms.MoveTo(stream);
+        return true;
     }
 }
