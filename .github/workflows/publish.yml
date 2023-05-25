@@ -26,10 +26,10 @@ jobs:
       run: nuget restore
       
     - name: Build the application
-      run: dotnet publish /t:MetadataConverter2_CLI /p:Configuration=Release
+      run: dotnet publish /t:Metadata_CLI /p:Configuration=Release
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
         name: net6.0
-        path: MetadataConverter2.CLI/bin/Release/net6.0/publish
+        path: Metadata.CLI/bin/Release/net6.0/publish
