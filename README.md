@@ -18,7 +18,7 @@ ________________________________________________________________________________
 Looking forward for feedback for issues/bugs to fix and update.
 _____________________________________________________________________________________________________________________________
 Special Thank to:
-- MetadataConverter original author
+- Dim
 - Perfare
 - PartyPooper
 - Ayy Lmao
