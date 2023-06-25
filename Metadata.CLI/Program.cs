@@ -27,7 +27,8 @@ try
     Console.WriteLine($"Processing...");
     byte[] metadataBytes = File.ReadAllBytes(inputPath.FullName);
 
-    using MemoryStream metadataStream = new(metadataBytes);
+    using var metadataStream = new MemoryStream();
+    metadataStream.Write(metadataBytes);
     MetaBase game = MetaManager.GetMeta(gameType);
     if (!game.Decrypt(metadataStream))
     {

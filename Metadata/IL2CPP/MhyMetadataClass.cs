@@ -248,16 +248,18 @@ public static class MhyIl2Cpp
         public ulong stringLiteralUsageCount;
         public ulong stringLiteralUsage;
 
-        public ulong GetAddress(uint usage)
+        public ulong GetAddress(UnityIl2Cpp.MetadataUsage usage, ulong index)
         {
-            return usage switch
+            var baseAddress = usage switch
             {
-                1 => typeInfoUsage,
-                4 => fieldInfoUsage,
-                5 => stringLiteralUsage,
-                3 or 6 => methodDefRefUsage,
+                UnityIl2Cpp.MetadataUsage.kMetadataUsageTypeInfo => typeInfoUsage,
+                UnityIl2Cpp.MetadataUsage.kMetadataUsageFieldInfo => fieldInfoUsage,
+                UnityIl2Cpp.MetadataUsage.kMetadataUsageStringLiteral => stringLiteralUsage,
+                UnityIl2Cpp.MetadataUsage.kMetadataUsageMethodDef or UnityIl2Cpp.MetadataUsage.kMetadataUsageMethodRef => methodDefRefUsage,
                 _ => throw new NotImplementedException(),
             };
+
+            return baseAddress + (index * 8);
         }
     }
 }

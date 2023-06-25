@@ -1,26 +1,27 @@
 ﻿using MetadataConverter2.Extensions;
 using MetadataConverter2.IL2CPP;
 using MetadataConverter2.Utils;
+using static MetadataConverter2.IL2CPP.UnityIl2Cpp;
 
 namespace MetadataConverter2.Converters;
 public static class StructConverter
 {
-    public static bool Convert(MemoryStream stream, double version)
+    public static bool Convert(MemoryStream stream, double version, MetadataUsagePair[] metadataUsagePairs = null, MetadataUsageList[] metadataUsageList = null)
     {
         using BinaryStream bs = new(stream) { Version = version };
         using MemoryStream ms = new(0x1000);
         using BinaryStream newBS = new(ms) { Version = version };
 
         MhyIl2Cpp.GlobalMetadataHeader header = bs.ReadClass<MhyIl2Cpp.GlobalMetadataHeader>(0);
-        UnityIl2Cpp.GlobalMetadataHeader newHeader = new()
+        GlobalMetadataHeader newHeader = new()
         {
             sanity = 0xFAB11BAF,
             version = (int)newBS.Version
         };
 
-        newBS.Position = (uint)typeof(UnityIl2Cpp.GlobalMetadataHeader).SizeOf(newBS.Version);
+        newBS.Position = (uint)typeof(GlobalMetadataHeader).SizeOf(newBS.Version);
 
-        bs.ConvertMetadataSection<MhyIl2Cpp.StringLiteral, UnityIl2Cpp.StringLiteral>(newBS, header.stringLiteralOffset, header.stringLiteralSize, out newHeader.stringLiteralOffset, out newHeader.stringLiteralSize, StringLiteralConverter);
+        bs.ConvertMetadataSection<MhyIl2Cpp.StringLiteral, StringLiteral>(newBS, header.stringLiteralOffset, header.stringLiteralSize, out newHeader.stringLiteralOffset, out newHeader.stringLiteralSize, StringLiteralConverter);
         bs.CopyMetadataSection(newBS, header.stringLiteralDataOffset, header.stringLiteralDataSize, out newHeader.stringLiteralDataOffset, out newHeader.stringLiteralDataSize);
         bs.CopyMetadataSection(newBS, header.stringOffset, header.stringSize, out newHeader.stringOffset, out newHeader.stringSize);
         bs.CopyMetadataSection(newBS, header.eventsOffset, header.eventsSize, out newHeader.eventsOffset, out newHeader.eventsSize);
@@ -44,6 +45,16 @@ public static class StructConverter
         bs.CopyMetadataSection(newBS, header.assembliesOffset, header.assembliesSize, out newHeader.assembliesOffset, out newHeader.assembliesSize);
         bs.CopyMetadataSection(newBS, header.metadataUsageListsOffset, header.metadataUsageListsCount, out newHeader.metadataUsageListsOffset, out newHeader.metadataUsageListsCount);
         bs.CopyMetadataSection(newBS, header.metadataUsagePairsOffset, header.metadataUsagePairsCount, out newHeader.metadataUsagePairsOffset, out newHeader.metadataUsagePairsCount);
+        if (metadataUsagePairs == null && metadataUsageList == null)
+        {
+            bs.CopyMetadataSection(newBS, header.metadataUsageListsOffset, header.metadataUsageListsCount, out newHeader.metadataUsageListsOffset, out newHeader.metadataUsageListsCount);
+            bs.CopyMetadataSection(newBS, header.metadataUsagePairsOffset, header.metadataUsagePairsCount, out newHeader.metadataUsagePairsOffset, out newHeader.metadataUsagePairsCount);
+        }
+        else
+        {
+            newBS.WriteMetadataSection(metadataUsageList, out newHeader.metadataUsageListsOffset, out newHeader.metadataUsageListsCount);
+            newBS.WriteMetadataSection(metadataUsagePairs, out newHeader.metadataUsagePairsOffset, out newHeader.metadataUsagePairsCount);
+        }
         bs.CopyMetadataSection(newBS, header.fieldRefsOffset, header.fieldRefsSize, out newHeader.fieldRefsOffset, out newHeader.fieldRefsSize);
         bs.CopyMetadataSection(newBS, header.referencedAssembliesOffset, header.referencedAssembliesSize, out newHeader.referencedAssembliesOffset, out newHeader.referencedAssembliesSize);
         bs.CopyMetadataSection(newBS, header.attributesInfoOffset, header.attributesInfoCount, out newHeader.attributesInfoOffset, out newHeader.attributesInfoCount);
@@ -59,7 +70,7 @@ public static class StructConverter
         return true;
     }
 
-    public static UnityIl2Cpp.StringLiteral StringLiteralConverter(MhyIl2Cpp.StringLiteral value)
+    public static StringLiteral StringLiteralConverter(MhyIl2Cpp.StringLiteral value)
     {
         return new()
         {

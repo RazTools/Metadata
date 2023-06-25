@@ -1,4 +1,5 @@
-﻿using MetadataConverter2.MetaTypes;
+﻿using MetadataConverter2.Converters;
+using MetadataConverter2.MetaTypes;
 using static MetadataConverter2.Crypto.CryptoHelper;
 
 namespace MetadataConverter2.Managers;
@@ -11,12 +12,12 @@ public static class MetaManager
         Metas.Add(index++, new Blocks(MetaType.GI, GIInitVector, 24));
         Metas.Add(index++, new Mark(MetaType.GICB1, 24));
         Metas.Add(index++, new Blocks(MetaType.GICBX, new byte[0x10], 24));
-        Metas.Add(index++, new BlocksUsages(MetaType.GIV2, GIInitVector, 24.5));
+        Metas.Add(index++, new Usages(MetaType.GIV2, GIInitVector, 24.5, BlocksConverter.Convert));
         Metas.Add(index++, new Blocks(MetaType.BH3Pre, new byte[0x10], 24));
         Metas.Add(index++, new Blocks(MetaType.BH3, BH3InitVector, 24));
-        Metas.Add(index++, new BlocksUsages(MetaType.BH3V2, BH3InitVector, 24.5));
+        Metas.Add(index++, new Usages(MetaType.BH3V2, BH3InitVector, 24.5, BlocksConverter.Convert));
         Metas.Add(index++, new Struct(MetaType.SR, SRInitVector, 24.5));  
-        Metas.Add(index++, new StructUsages(MetaType.SRV2, SRInitVector, 24.5));
+        Metas.Add(index++, new Usages(MetaType.SRV2, SRInitVector, 24.5, StructConverter.Convert));
         Metas.Add(index++, new Struct(MetaType.ZZZ, Array.Empty<byte>(), 24.5));
     }
     public static MetaBase GetMeta(MetaType metaType)
