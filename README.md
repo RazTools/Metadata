@@ -18,7 +18,7 @@ ________________________________________________________________________________
 Looking forward for feedback for issues/bugs to fix and update.
 _____________________________________________________________________________________________________________________________
 Special Thank to:
-- MetadataConverter original author
+- Dim
 - Perfare
 - PartyPooper
 - Ayy Lmao
@@ -29,6 +29,4 @@ Special Thank to:
 _____________________________________________________________________________________________________________________________
 
 If you find `Metadata` useful, you can leave a star 😄
-If you want to support (optional), you can do so [here](https://ko-fi.com/razmoth)
-
 Thank you, looking forward for your feedback
